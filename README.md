@@ -7,4 +7,4 @@ Fitur utama yang tersedia meliputi:
 
 2. KPI Penjualan
 
-3. Visualisasi Data:
+3. Visualisasi Data
