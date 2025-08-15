@@ -42,10 +42,42 @@ else:
     # kalau filter date-nya belum tuntas
     filtered_df = df_sales 
 
-page = st.sidebar.selectbox(
+page = st.sidebar.radio(
     "Pilih Halaman:",
-    ["Performa Penjualan", "Analisis Produk", "Analisis Waktu"]
+    ["Performa Penjualan", "Performa Produk", "Tren"]
 )
+
+# Filter berdasarkan rentang harga produk
+price_range = st.sidebar.slider(
+    "Pilih Rentang Harga",
+    min_value=float(df_sales['UnitPrice'].min()),  
+    max_value=float(df_sales['UnitPrice'].max()),  
+    value=(float(df_sales['UnitPrice'].min()), float(df_sales['UnitPrice'].max())), 
+    step=1.0
+)
+
+# Filter berdasarkan kategori produk
+category_filter = st.sidebar.multiselect(
+    "Pilih Kategori Produk",
+    options=df_sales['Description'].unique(),
+    default=df_sales['Description'].unique()
+)
+
+# Filter berdasarkan negara
+country_filter = st.sidebar.multiselect(
+    "Pilih Negara",
+    options=df_sales['Country'].unique(),
+    default=df_sales['Country'].unique()
+)
+
+# Terapkan filter tambahans
+filtered_df = filtered_df[
+    filtered_df['Description'].isin(category_filter) &
+    filtered_df['Country'].isin(country_filter) &
+    (filtered_df['UnitPrice'] >= price_range[0]) &
+    (filtered_df['UnitPrice'] <= price_range[1])
+]
+
 
 st.markdown("<h4>KPI Penjualan</h4>", unsafe_allow_html=True)
 
@@ -103,7 +135,7 @@ if page == "Performa Penjualan":
     
         st.plotly_chart(fig_total_sales_by_country, use_container_width=True)
     
-elif page == "Analisis Produk":
+elif page == "Performa Produk":
     col_top_product, col_favorite_product = st.columns(2)
     
     # --- Top 10 Produk ---
@@ -147,7 +179,7 @@ elif page == "Analisis Produk":
 
         st.plotly_chart(fig_top_products_per_country, use_container_width=True)
         
-elif page == "Analisis Waktu":
+elif page == "Tren":
     filtered_df['InvoiceMonth'] = filtered_df['InvoiceDate'].dt.strftime('%Y-%m')
     
     sales_by_month = filtered_df.groupby('InvoiceMonth')['TotalPrice'].sum().reset_index()
