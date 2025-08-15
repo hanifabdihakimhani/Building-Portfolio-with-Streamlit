@@ -4,7 +4,7 @@ import plotly.express as px
 
 # ---- set konfigurasi halaman ----
 st.set_page_config(
-    page_title='Dashboard Analisis Penjualan',
+    page_title='Dashboard Analisis Penjualan Ecommerce',
     layout='wide',
     initial_sidebar_state='expanded'
 )
@@ -19,8 +19,8 @@ df_sales = load_data()
 df_sales[['InvoiceDate']] = df_sales[['InvoiceDate']].apply(pd.to_datetime)
 
 # judul dashboard 
-st.markdown("<h1 style='text-align: center;'>Dashboard Analisis Penjualan</h1>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align: center;'>Dashboard interaktif ini menyediakan gambaran umum performa penjualan.</h3>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>Dashboard Analisis Penjualan Ecommerce</h1>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center;'>Dashboard interaktif ini menyediakan gambaran umum performa penjualan pada ecommerce.</h3>", unsafe_allow_html=True)
 
 # Sidebar Navigation
 min_date = df_sales['InvoiceDate'].min().date()
